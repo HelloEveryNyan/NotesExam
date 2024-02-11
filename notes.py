@@ -8,11 +8,11 @@ class NotesApp:
         self.notes = self.load_notes()
 
     def load_notes(self):
-        if os.path.exists(self.notes_file):
-            with open(self.notes_file, 'r') as file:
-                return json.load(file)
-        else:
-            return []
+        if not os.path.exists(self.notes_file):
+            with open(self.notes_file, 'w') as file:
+                json.dump([], file)
+        with open(self.notes_file, 'r') as file:
+            return json.load(file)
 
     def save_notes(self):
         with open(self.notes_file, 'w') as file:
