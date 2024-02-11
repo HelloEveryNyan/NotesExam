@@ -25,9 +25,8 @@ class NotesApp:
             'body': body,
             'timestamp': datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         }
-                
-    self.notes.append(note)
-    self.save_notes()
+        self.notes.append(note)
+        self.save_notes()
 
     def view_notes(self):
         if not self.notes:
@@ -36,6 +35,22 @@ class NotesApp:
             for note in self.notes:
                 print(f"{note['id']}. {note['title']} - {note['timestamp']}")
 
+    def edit_note(self, note_id, title, body):
+        if 1 <= note_id <= len(self.notes):
+            self.notes[note_id - 1]['title'] = title
+            self.notes[note_id - 1]['body'] = body
+            self.notes[note_id - 1]['timestamp'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+            self.save_notes()
+        else:
+            print("Invalid note ID.")
+
+    def delete_note(self, note_id):
+        if 1 <= note_id <= len(self.notes):
+            del self.notes[note_id - 1]
+            self.save_notes()
+        else:
+            print("Invalid note ID.")
+
 if __name__ == "__main__":
     app = NotesApp()
 
@@ -43,7 +58,9 @@ if __name__ == "__main__":
         print("\nOptions:")
         print("1. Add Note")
         print("2. View Notes")
-        print("3. Exit")
+        print("3. Edit Note")
+        print("4. Delete Note")
+        print("5. Exit")
 
         choice = input("Enter your choice: ")
 
@@ -58,6 +75,18 @@ if __name__ == "__main__":
             app.view_notes()
 
         elif choice == '3':
+            note_id = int(input("Enter note ID to edit: "))
+            title = input("Enter updated title: ")
+            body = input("Enter updated body: ")
+            app.edit_note(note_id, title, body)
+            print("Note edited successfully.")
+
+        elif choice == '4':
+            note_id = int(input("Enter note ID to delete: "))
+            app.delete_note(note_id)
+            print("Note deleted successfully.")
+
+        elif choice == '5':
             print("Exiting the Notes App. Goodbye!")
             break
 
